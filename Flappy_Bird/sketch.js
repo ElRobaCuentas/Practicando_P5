@@ -1,43 +1,47 @@
 var bird;
-var pipe = [];
+var pipes = [];
+
 function setup() {
     // put setup code here
-    createCanvas(400, 600);
+    createCanvas(400,600);
     bird = new Bird();
-    pipe.push(new Pipe());
+    pipes.push(new Pipe());
 }
-
 
 function draw() {
     // put drawing code here
-    background(60);
-
-    for (var i = pipe.length-1; i >= 0; i--) {
-        pipe[i].show(); 
-        pipe[i].update();  
-        
-        if(pipe[i].hits(bird)) {
-            console.log("HIT");
-        }
-
-        if(pipe[i].offscreen()) {
-            pipe.splice(i, 1);
-        }
-    }
-
-    bird.update(); 
+    background(0);
+    bird.update();
     bird.show();
-    
-    if(frameCount % 100 === 0) {
-        pipe.push(new Pipe());     
+
+    // GENERA NUEVOS TUBOS
+    if (frameCount % 100 === 0) { //multiplos de 100
+        pipes.push(new Pipe()); //genera un nuevo tubo
     }
+    
 
+    // AQUI OCURRE TODAS LOS METODOS DEL TUBO
+    for (var i = 0; i < pipes.length; i++) {
+        pipes[i].show();
+        pipes[i].update();  
 
-}
+        if(pipes[i].hits(bird)){
+            console.log("HIT");
+            console.log("GAME OVER");
+        }      
+
+        if(pipes[i].offscreen()){
+            pipes.splice(i, 1); //elimina el tubo q ya termino de reccorer
+        }      
+    } 
+} 
 
 function keyPressed() {
-    if(key === ' ') {
-        bird.up();
-        //console.log("SPACE")
+    if( key == ' '){
+        bird.up(); 
     }
-}
+}  
+
+    
+
+  
